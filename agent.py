@@ -4,8 +4,8 @@ from pathlib import Path
 
 import requests
 
-API_URL = "https://YOUR_API_HOST/v1/chat/completions"
-MODEL = "YOUR_MODEL_NAME"
+API_URL = "https://api.pinaic.com/v1/chat/completions"
+MODEL = "gpt-6-luna"
 
 api_key = Path("api_key.txt").read_text().strip()
 
