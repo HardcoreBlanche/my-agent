@@ -1,8 +1,10 @@
 import json
 import subprocess
+import readline
 from pathlib import Path
 
 import requests
+
 
 API_URL = "https://api.pinaic.com/v1/chat/completions"
 MODEL = "gpt-6-luna"
