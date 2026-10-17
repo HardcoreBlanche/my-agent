@@ -22,39 +22,50 @@ BASH_TOOL = {
             "type": "object",
             "properties": {"command": {"type": "string"}},
             "required": ["command"],
-            "additionalProperties": False,
         },
     },
 }
 
 
 def run_bash(command):
+
+    print(f"\n$ {command}", flush=True)
+
     try:
         result = subprocess.run(
             ["bash", "-c", command],
+            stdin=subprocess.DEVNULL,
             stdout=subprocess.PIPE,
             stderr=subprocess.STDOUT,
             timeout=60,
         )
         status = f"exit_code: {result.returncode}"
         output = result.stdout
-    except subprocess.TimeoutExpired as error:
+
+    except subprocess.TimeoutExpired as error: 
+        
         status = "exit_code: unavailable (timed out after 60 seconds)"
         output = error.output or b""
 
     output = output.decode("utf-8", errors="replace")
+
     if len(output) > 12000:
         output = output[:12000] + "\n[output truncated]"
-    return f"{status}\n{output}"
+    
+    output = f"{status}\n{output}"
+    print(output, flush=True)
+    return output
 
 
 messages = [{"role": "system", "content": SYSTEM_PROMPT}]
 while True:
     user_input = input("You: ").strip()
+    
     if user_input == "quit":
         break
     if not user_input:
         continue
+    
     messages.append({"role": "user", "content": user_input})
 
     while True:
